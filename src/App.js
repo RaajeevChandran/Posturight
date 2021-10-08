@@ -256,7 +256,11 @@ export default function App() {
     }
   }
 
-  const enhancements = [{enhancement:"Shoulder Tilt",value:weights[0]},{enhancement:"Head Tilt",value:weights[1]},{enhancement:"Shoulder Alignment",value:weights[2]}]
+  const enhancements = [
+    { enhancement: "Shoulder Tilt", value: weights[0] },
+    { enhancement: "Head Tilt", value: weights[1] },
+    { enhancement: "Shoulder Alignment", value: weights[2] }
+  ];
 
   return (
     <div
@@ -285,128 +289,179 @@ export default function App() {
           >
             <canvas ref={canvasRef} />
           </Webcam>
-          <h3 style={{ display: numIssues === -1 ? "none" : "inline-block",color:"#fff" }}>
+          <h3
+            style={{
+              display: numIssues === -1 ? "none" : "inline-block",
+              color: "#fff"
+            }}
+          >
             Your Posture is {statuses.get(numIssues)}
           </h3>
-          <p style={{color:"white",fontSize:"25px"}}>Shoulder Tilt : {shoulderSlopeOffset}</p>
-          <p style={{color:"white",fontSize:"25px"}}>Head Tilt : {headSlopeOffset}</p>
-          <p style={{color:"white",fontSize:"25px"}}>Shoulder Alignment : {shoulderYOffset}</p>
+          <p style={{ color: "white", fontSize: "25px" }}>
+            Shoulder Tilt : {shoulderSlopeOffset}
+          </p>
+          <p style={{ color: "white", fontSize: "25px" }}>
+            Head Tilt : {headSlopeOffset}
+          </p>
+          <p style={{ color: "white", fontSize: "25px" }}>
+            Shoulder Alignment : {shoulderYOffset}
+          </p>
           <Button variant={button1} onClick={changeSetPrefs}>
             Set Your Preferred Posture
           </Button>{" "}
         </div>
         <div className="properties" style={{ background: "#C4E0E5" }}>
-          <h4 style={{ marginTop: "15px",fontWeight:"bold" }}>Enhance Posture Sensitivity</h4>
-          {
-            enhancements.map((e,index)=>{
-              return (
-                <div style={{display:"flex",flexDirection:"row",width:"350px",justifyContent:"center",alignItems:"center"}}>
-          <p style={{paddingTop:"20px",paddingRight:"10px",flexGrow:"1",fontWeight:"bold",}}>{e.enhancement}</p>
+          <h4 style={{ marginTop: "15px", fontWeight: "bold" }}>
+            Enhance Posture Sensitivity
+          </h4>
+          {enhancements.map((e, index) => {
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "350px",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <p
+                  style={{
+                    paddingTop: "20px",
+                    paddingRight: "10px",
+                    flexGrow: "1",
+                    fontWeight: "bold"
+                  }}
+                >
+                  {e.enhancement}
+                </p>
 
-            <Counter initialValue ={ e.value} onMinus={()=>changeWeight(index,false)} onPlus={()=>changeWeight(index,true)}/>
-          </div>
-              )
-            })
-          }
-
+                <Counter
+                  initialValue={e.value}
+                  onMinus={() => changeWeight(index, false)}
+                  onPlus={() => changeWeight(index, true)}
+                />
+              </div>
+            );
+          })}
+          {/* <iframe
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRwui0ExPn"
+            width="100%"
+            height="380"
+            frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          ></iframe> */}
+          <iframe
+            title="spotify"
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRwui0ExPn"
+            width="90%"
+            style={{
+              marginTop: 30,
+              borderRadius: 10
+            }}
+            height="280"
+            frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          ></iframe>
         </div>
       </div>
     </div>
   );
 }
 
-
 class Counter extends React.Component {
   constructor(props) {
     super(props);
-    this.inputRef = React.createRef()
-    this.state = { curValue: props.initialValue }
+    this.inputRef = React.createRef();
+    this.state = { curValue: props.initialValue };
   }
-  
-  changeValue = ({curValue, newValue}) => {
-    this.setState({ curValue: newValue !== 100 ? newValue : 99 })
-  }
-  
-  handleValueChange = (newValue,isPlus) => {
+
+  changeValue = ({ curValue, newValue }) => {
+    this.setState({ curValue: newValue !== 100 ? newValue : 99 });
+  };
+
+  handleValueChange = (newValue, isPlus) => {
     const {
       props: { id, onChange },
-      state: {
-        curValue
-      }
-    } = this
+      state: { curValue }
+    } = this;
 
-    if(isPlus) {
+    if (isPlus) {
       this.props.onPlus();
-    }else{
+    } else {
       this.props.onMinus();
     }
 
     if (!newValue) {
-        newValue = this.props.initialValue
+      newValue = this.props.initialValue;
     }
     if (newValue < 0) {
-      newValue = this.props.initialValue
+      newValue = this.props.initialValue;
     }
-      
-      this.inputRef.current.style.transform = newValue > curValue ? 'translateY(-100%)' : 'translateY(100%)'
-      this.inputRef.current.style.opacity = 0
-       
-    setTimeout(() => {
-        this.inputRef.current.style.transitionDuration = '0s'
-        this.inputRef.current.style.transform = newValue > curValue ? 'translateY(100%)' : 'translateY(-100%)'
-        this.inputRef.current.style.opacity = 0
-        this.changeValue({ curValue, newValue })
-        
-        setTimeout(() => {
-          this.inputRef.current.style.transitionDuration = '0.3s'
-          this.inputRef.current.style.transform = 'translateY(0)'
-          this.inputRef.current.style.opacity = 1
-        }, 20)
-      }, 250)
-    }   
-  
 
-  render () {
+    this.inputRef.current.style.transform =
+      newValue > curValue ? "translateY(-100%)" : "translateY(100%)";
+    this.inputRef.current.style.opacity = 0;
+
+    setTimeout(() => {
+      this.inputRef.current.style.transitionDuration = "0s";
+      this.inputRef.current.style.transform =
+        newValue > curValue ? "translateY(100%)" : "translateY(-100%)";
+      this.inputRef.current.style.opacity = 0;
+      this.changeValue({ curValue, newValue });
+
+      setTimeout(() => {
+        this.inputRef.current.style.transitionDuration = "0.3s";
+        this.inputRef.current.style.transform = "translateY(0)";
+        this.inputRef.current.style.opacity = 1;
+      }, 20);
+    }, 250);
+  };
+
+  render() {
     const {
-      state: {
-        curValue
-      }
-    } = this
-    
+      state: { curValue }
+    } = this;
+
     return (
-      <div {...{ className: 'counter' }}>
+      <div {...{ className: "counter" }}>
         <button
           {...{
-            className: 'button',
-            onClick: () => { this.handleValueChange(curValue -0.10,true) },
-            title: '-1'
+            className: "button",
+            onClick: () => {
+              this.handleValueChange(curValue - 0.1, true);
+            },
+            title: "-1"
           }}
         >
           −
         </button>
-        <div {...{ className: 'input-wrapper' }}>
+        <div {...{ className: "input-wrapper" }}>
           <input
-          {...{
-            className: 'input',
-            maxlength: 3,
-            readOnly:true,
-            ref: this.inputRef,
-            type: 'text',
-            value: curValue
-          }} 
-        />
+            {...{
+              className: "input",
+              maxlength: 3,
+              readOnly: true,
+              ref: this.inputRef,
+              type: "text",
+              value: curValue
+            }}
+          />
         </div>
         <button
           {...{
-            className: 'button',
-            onClick: () => { this.handleValueChange(curValue + 0.10,false) },
-            title: '+1'
+            className: "button",
+            onClick: () => {
+              this.handleValueChange(curValue + 0.1, false);
+            },
+            title: "+1"
           }}
         >
           +
         </button>
       </div>
-    )
+    );
   }
 }
-
