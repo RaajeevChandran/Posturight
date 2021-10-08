@@ -241,115 +241,151 @@ export default function App() {
   } else {
     spinner = <div></div>;
   }
-  function getColor(num){
-    switch (num){
-      case 2: 
-      return "#FF4B2B"
+  function getColor(num) {
+    switch (num) {
+      case 2:
+        return "#FF4B2B";
       case 0:
-        return "#45B649"
+        return "#45B649";
       case 1:
-        return "#DCE35B"
+        return "#DCE35B";
       default:
-        return "#ffc3a0"
+        return "#ffc3a0";
     }
-
   }
   return (
     <div
       style={{
         textAlign: "center",
         background: getColor(numIssues),
-        height:"100vh",
-        width:"100%",
+        height: "100vh",
+        width: "100%",
         transition: "background 700ms linear,color 700ms linear",
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center",
-        padding:0
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 0
       }}
     >
-
       <div className="container">
-        <div className="cam">  
-        <Webcam
-          id="camera"
-          ref={webcamRef}
-          style={{
-            height:"400px",
-            borderRadius:"40px",
-            width:"400px"
-          }}
-        ><canvas
-        ref={canvasRef}
-        
-        
-      /></Webcam>
-        <h3 style={{ display: numIssues === -1 ? "none" : "inline-block" }}>
-          Posture&nbsp; {statuses.get(numIssues)}
-        </h3>
-        
-        
-        <p>Shoulder Tilt {shoulderSlopeOffset}</p>
-        <p>Head Tilt {headSlopeOffset}</p>
-        <p>Shoulder Alignment {shoulderYOffset}</p>
-        <Button variant={button1} onClick={changeSetPrefs}>
-          Set Your Preferred Posture
-        </Button>{" "}
+        <div className="cam">
+          <Webcam
+            id="camera"
+            ref={webcamRef}
+            style={{
+              height: "400px",
+              borderRadius: "40px",
+              width: "400px"
+            }}
+          >
+            <canvas ref={canvasRef} />
+          </Webcam>
+          <h3 style={{ display: numIssues === -1 ? "none" : "inline-block" }}>
+            Your Posture is {statuses.get(numIssues)}
+          </h3>
+          <p>Shoulder Tilt {shoulderSlopeOffset}</p>
+          <p>Head Tilt {headSlopeOffset}</p>
+          <p>Shoulder Alignment {shoulderYOffset}</p>
+          <Button variant={button1} onClick={changeSetPrefs}>
+            Set Your Preferred Posture
+          </Button>{" "}
         </div>
-        <div className="properties">
+        <div className="properties" style={{ background: "#e3d0b6" }}>
+          <h4 style={{ marginTop: "15px" }}>Sensitivity Adjustment</h4>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              padding: "10px",
+              marginTop: "10px"
+            }}
+          >
+            <div>
+              <p>Shoulder Tilt</p>
+              <p>Head Tilt</p>
+              <p>Shoulder Alignment</p>
+            </div>
 
-        <h4 style={{ marginTop: "15px" }}>Sensitivity Adjustment</h4>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            padding: "10px",
-            marginTop: "10px"
-          }}
-        >
-          <div>
-            <p>Shoulder Tilt</p>
-            <p>{weights[0]}</p>
-            <ButtonGroup>
-              <Button onClick={() => changeWeight(0, false)} variant={button2}>
-                -
-              </Button>
-              <Button onClick={() => changeWeight(0, true)} variant={button2}>
-                +
-              </Button>
-            </ButtonGroup>
+            <div style={{ paddingLeft: 20 }}>
+              <p
+                style={{
+                  background: "#007bff",
+                  padding: 1,
+                  borderRadius: "5px",
+                  color: "whitesmoke"
+                }}
+              >
+                {weights[0]}
+              </p>
+              <p
+                style={{
+                  background: "#007bff",
+                  padding: 1,
+                  borderRadius: "5px",
+                  color: "whitesmoke"
+                }}
+              >
+                {weights[1]}
+              </p>
+              <p
+                style={{
+                  background: "#007bff",
+                  margin: 1,
+                  borderRadius: "5px",
+                  color: "whitesmoke"
+                }}
+              >
+                {weights[2]}
+              </p>
+            </div>
+            <div
+              style={{
+                flexDirection: "column",
+                display: "flex",
+                paddingLeft: 20
+              }}
+            >
+              {/* <p>Shoulder Alignment</p>
+              <p>{weights[2]}</p> */}
+              <ButtonGroup style={{paddingBottom:8}}>
+                <Button
+                  onClick={() => changeWeight(0, false)}
+                  variant={button2}
+                >
+                  -
+                </Button>
+                <Button onClick={() => changeWeight(0, true)} variant={button2}>
+                  +
+                </Button>
+              </ButtonGroup>
+              <ButtonGroup style={{paddingBottom:8}}>
+                <Button
+                  onClick={() => changeWeight(1, false)}
+                  variant={button2}
+                >
+                  -
+                </Button>
+                <Button onClick={() => changeWeight(1, true)} variant={button2}>
+                  +
+                </Button>
+              </ButtonGroup>
+              <ButtonGroup style={{paddingBottom:8}}>
+                <Button
+                  onClick={() => changeWeight(2, false)}
+                  variant={button2}
+                >
+                  -
+                </Button>
+                <Button onClick={() => changeWeight(2, true)} variant={button2}>
+                  +
+                </Button>
+              </ButtonGroup>
+            </div>
           </div>
-
-          <div>
-            <p>Head Tilt</p>
-            <p>{weights[1]}</p>
-            <ButtonGroup>
-              <Button onClick={() => changeWeight(1, false)} variant={button2}>
-                -
-              </Button>
-              <Button onClick={() => changeWeight(1, true)} variant={button2}>
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-          <div>
-            <p>Shoulder Alignment</p>
-            <p>{weights[2]}</p>
-            <ButtonGroup>
-              <Button onClick={() => changeWeight(2, false)} variant={button2}>
-                -
-              </Button>
-              <Button onClick={() => changeWeight(2, true)} variant={button2}>
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-        </div>
-
         </div>
       </div>
 
-        {/* {spinner}
+      {/* {spinner}
         <h3 style={{ display: numIssues === -1 ? "none" : "inline-block" }}>
           Posture&nbsp;
         </h3>
@@ -361,9 +397,8 @@ export default function App() {
         <Button variant={button1} onClick={changeSetPrefs}>
           Set Your Preferred Posture
         </Button>{" "} */}
-    
 
-        {/* <Webcam
+      {/* <Webcam
           id="camera"
           ref={webcamRef}
           style={{
