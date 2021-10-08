@@ -256,26 +256,48 @@ export default function App() {
   }
   return (
     <div
-      className="App"
       style={{
-        fontFamily: "sans-serif",
+        // fontFamily: "sans-serif",
         textAlign: "center",
-        background: getColor(numIssues)
+        background: getColor(numIssues),
+        height:"100vh",
+        width:"100%",
+        transition: "background 700ms linear,color 700ms linear",
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        padding:0
       }}
     >
-      <header
-        className="App-header"
-        style={{
-          background: "#f8f9fa",
-          borderRadius: "10px",
-          padding: "15px",
-          paddingTop: "20px",
-          maxWidth: "800px",
-          margin: "auto",
-          marginTop: "30px"
-        }}
-      >
-        {spinner}
+
+      <div className="container">
+        <div className="cam">  
+        <Webcam
+          id="camera"
+          ref={webcamRef}
+          style={{
+            height:"300px"
+          }}
+        />
+        <canvas
+          ref={canvasRef}
+          // style={{
+          //   position: "relative",
+          //   marginLeft: "auto",
+          //   marginRight: "auto",
+          //   left: 0,
+          //   right: 0,
+          //   textAlign: "center",
+          //   zindex: 9,
+          //   width: 640,
+          //   height: 480
+          // }}
+        />
+        </div>
+        <div className="properties">2</div>
+      </div>
+
+        {/* {spinner}
         <h3 style={{ display: numIssues === -1 ? "none" : "inline-block" }}>
           Posture&nbsp;
         </h3>
@@ -286,14 +308,10 @@ export default function App() {
         <p>Shoulder Alignment {shoulderYOffset}</p>
         <Button variant={button1} onClick={changeSetPrefs}>
           Set Your Preferred Posture
-        </Button>{" "}
-        {/* <Button variant="danger">Reset</Button>{' '} */}
-        {/* <Button onClick={sendNotification} variant="secondary">
-          Test Notification
         </Button>{" "} */}
-        <h1></h1>
-        <br></br>
-        <Webcam
+    
+
+        {/* <Webcam
           id="camera"
           ref={webcamRef}
           style={{
@@ -370,8 +388,8 @@ export default function App() {
             </ButtonGroup>
           </div>
         </div>
-      </header>
-      <br></br>
+
+      <br></br> */}
     </div>
   );
 }
