@@ -244,15 +244,20 @@ export default function App() {
   function getColor(num) {
     switch (num) {
       case 2:
-        return "#FF4B2B";
+        return "linear-gradient(to right, #c31432, #240b36)";
       case 0:
-        return "#45B649";
+        return "linear-gradient(to right, #ff512f, #f09819)";
       case 1:
-        return "#DCE35B";
+        return "linear-gradient(to right, #f09819, #edde5d)";
+      case 3:
+        return "linear-gradient(to top, #ed213a, #93291e)";
       default:
-        return "#ffc3a0";
+        return "linear-gradient(to right, #00c6ff, #0072ff)";
     }
   }
+
+  const enhancements = [{enhancement:"Shoulder Tilt",value:weights[0]},{enhancement:"Head Tilt",value:weights[1]},{enhancement:"Shoulder Alignment",value:weights[2]}]
+
   return (
     <div
       style={{
@@ -280,203 +285,128 @@ export default function App() {
           >
             <canvas ref={canvasRef} />
           </Webcam>
-          <h3 style={{ display: numIssues === -1 ? "none" : "inline-block" }}>
+          <h3 style={{ display: numIssues === -1 ? "none" : "inline-block",color:"#fff" }}>
             Your Posture is {statuses.get(numIssues)}
           </h3>
-          <p>Shoulder Tilt {shoulderSlopeOffset}</p>
-          <p>Head Tilt {headSlopeOffset}</p>
-          <p>Shoulder Alignment {shoulderYOffset}</p>
+          <p style={{color:"white",fontSize:"25px"}}>Shoulder Tilt : {shoulderSlopeOffset}</p>
+          <p style={{color:"white",fontSize:"25px"}}>Head Tilt : {headSlopeOffset}</p>
+          <p style={{color:"white",fontSize:"25px"}}>Shoulder Alignment : {shoulderYOffset}</p>
           <Button variant={button1} onClick={changeSetPrefs}>
             Set Your Preferred Posture
           </Button>{" "}
         </div>
-        <div className="properties" style={{ background: "#e3d0b6" }}>
-          <h4 style={{ marginTop: "15px" }}>Sensitivity Adjustment</h4>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-              padding: "10px",
-              marginTop: "10px"
-            }}
-          >
-            <div>
-              <p>Shoulder Tilt</p>
-              <p>Head Tilt</p>
-              <p>Shoulder Alignment</p>
-            </div>
+        <div className="properties" style={{ background: "#C4E0E5" }}>
+          <h4 style={{ marginTop: "15px",fontWeight:"bold" }}>Enhance Posture Sensitivity</h4>
+          {
+            enhancements.map((e,index)=>{
+              return (
+                <div style={{display:"flex",flexDirection:"row",width:"350px",justifyContent:"center",alignItems:"center"}}>
+          <p style={{paddingTop:"20px",paddingRight:"10px",flexGrow:"1",fontWeight:"bold",}}>{e.enhancement}</p>
 
-            <div style={{ paddingLeft: 20 }}>
-              <p
-                style={{
-                  background: "#007bff",
-                  padding: 1,
-                  borderRadius: "5px",
-                  color: "whitesmoke"
-                }}
-              >
-                {weights[0]}
-              </p>
-              <p
-                style={{
-                  background: "#007bff",
-                  padding: 1,
-                  borderRadius: "5px",
-                  color: "whitesmoke"
-                }}
-              >
-                {weights[1]}
-              </p>
-              <p
-                style={{
-                  background: "#007bff",
-                  margin: 1,
-                  borderRadius: "5px",
-                  color: "whitesmoke"
-                }}
-              >
-                {weights[2]}
-              </p>
-            </div>
-            <div
-              style={{
-                flexDirection: "column",
-                display: "flex",
-                paddingLeft: 20
-              }}
-            >
-              {/* <p>Shoulder Alignment</p>
-              <p>{weights[2]}</p> */}
-              <ButtonGroup style={{paddingBottom:8}}>
-                <Button
-                  onClick={() => changeWeight(0, false)}
-                  variant={button2}
-                >
-                  -
-                </Button>
-                <Button onClick={() => changeWeight(0, true)} variant={button2}>
-                  +
-                </Button>
-              </ButtonGroup>
-              <ButtonGroup style={{paddingBottom:8}}>
-                <Button
-                  onClick={() => changeWeight(1, false)}
-                  variant={button2}
-                >
-                  -
-                </Button>
-                <Button onClick={() => changeWeight(1, true)} variant={button2}>
-                  +
-                </Button>
-              </ButtonGroup>
-              <ButtonGroup style={{paddingBottom:8}}>
-                <Button
-                  onClick={() => changeWeight(2, false)}
-                  variant={button2}
-                >
-                  -
-                </Button>
-                <Button onClick={() => changeWeight(2, true)} variant={button2}>
-                  +
-                </Button>
-              </ButtonGroup>
-            </div>
+            <Counter initialValue ={ e.value} onMinus={()=>changeWeight(index,false)} onPlus={()=>changeWeight(index,true)}/>
           </div>
+              )
+            })
+          }
+
         </div>
       </div>
-
-      {/* {spinner}
-        <h3 style={{ display: numIssues === -1 ? "none" : "inline-block" }}>
-          Posture&nbsp;
-        </h3>
-        <h3 style={{ display: "inline-block" }}>{statuses.get(numIssues)}</h3>
-        <br></br>
-        <p>Shoulder Tilt {shoulderSlopeOffset}</p>
-        <p>Head Tilt {headSlopeOffset}</p>
-        <p>Shoulder Alignment {shoulderYOffset}</p>
-        <Button variant={button1} onClick={changeSetPrefs}>
-          Set Your Preferred Posture
-        </Button>{" "} */}
-
-      {/* <Webcam
-          id="camera"
-          ref={webcamRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-            borderRadius: 10
-          }}
-        />
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "relative",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480
-          }}
-        />
-        <h4 style={{ marginTop: "15px" }}>Sensitivity Adjustment</h4>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            padding: "10px",
-            marginTop: "10px"
-          }}
-        >
-          <div>
-            <p>Shoulder Tilt</p>
-            <p>{weights[0]}</p>
-            <ButtonGroup>
-              <Button onClick={() => changeWeight(0, false)} variant={button2}>
-                -
-              </Button>
-              <Button onClick={() => changeWeight(0, true)} variant={button2}>
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-
-          <div>
-            <p>Head Tilt</p>
-            <p>{weights[1]}</p>
-            <ButtonGroup>
-              <Button onClick={() => changeWeight(1, false)} variant={button2}>
-                -
-              </Button>
-              <Button onClick={() => changeWeight(1, true)} variant={button2}>
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-          <div>
-            <p>Shoulder Alignment</p>
-            <p>{weights[2]}</p>
-            <ButtonGroup>
-              <Button onClick={() => changeWeight(2, false)} variant={button2}>
-                -
-              </Button>
-              <Button onClick={() => changeWeight(2, true)} variant={button2}>
-                +
-              </Button>
-            </ButtonGroup>
-          </div>
-        </div>
-
-      <br></br> */}
     </div>
   );
 }
+
+
+class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inputRef = React.createRef()
+    this.state = { curValue: props.initialValue }
+  }
+  
+  changeValue = ({curValue, newValue}) => {
+    this.setState({ curValue: newValue !== 100 ? newValue : 99 })
+  }
+  
+  handleValueChange = (newValue,isPlus) => {
+    const {
+      props: { id, onChange },
+      state: {
+        curValue
+      }
+    } = this
+
+    if(isPlus) {
+      this.props.onPlus();
+    }else{
+      this.props.onMinus();
+    }
+
+    if (!newValue) {
+        newValue = this.props.initialValue
+    }
+    if (newValue < 0) {
+      newValue = this.props.initialValue
+    }
+      
+      this.inputRef.current.style.transform = newValue > curValue ? 'translateY(-100%)' : 'translateY(100%)'
+      this.inputRef.current.style.opacity = 0
+       
+    setTimeout(() => {
+        this.inputRef.current.style.transitionDuration = '0s'
+        this.inputRef.current.style.transform = newValue > curValue ? 'translateY(100%)' : 'translateY(-100%)'
+        this.inputRef.current.style.opacity = 0
+        this.changeValue({ curValue, newValue })
+        
+        setTimeout(() => {
+          this.inputRef.current.style.transitionDuration = '0.3s'
+          this.inputRef.current.style.transform = 'translateY(0)'
+          this.inputRef.current.style.opacity = 1
+        }, 20)
+      }, 250)
+    }   
+  
+
+  render () {
+    const {
+      state: {
+        curValue
+      }
+    } = this
+    
+    return (
+      <div {...{ className: 'counter' }}>
+        <button
+          {...{
+            className: 'button',
+            onClick: () => { this.handleValueChange(curValue -0.10,true) },
+            title: '-1'
+          }}
+        >
+          −
+        </button>
+        <div {...{ className: 'input-wrapper' }}>
+          <input
+          {...{
+            className: 'input',
+            maxlength: 3,
+            readOnly:true,
+            ref: this.inputRef,
+            type: 'text',
+            value: curValue
+          }} 
+        />
+        </div>
+        <button
+          {...{
+            className: 'button',
+            onClick: () => { this.handleValueChange(curValue + 0.10,false) },
+            title: '+1'
+          }}
+        >
+          +
+        </button>
+      </div>
+    )
+  }
+}
+
