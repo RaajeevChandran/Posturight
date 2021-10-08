@@ -208,10 +208,10 @@ export default function App() {
     newWeights.push(Math.round(parseFloat(slouchWeight) * 100) / 100);
     console.log("new weights " + newWeights);
     setWeights(newWeights);
-    localStorage.setItem(
-      "weights",
-      String(newWeights).replaceAll("[", "").replaceAll("]", "")
-    );
+    // localStorage.setItem(
+    //   "weights",
+    //   String(newWeights).replaceAll("[", "").replaceAll("]", "")
+    // );
   }
 
   var statuses = new Map([
@@ -257,7 +257,6 @@ export default function App() {
   return (
     <div
       style={{
-        // fontFamily: "sans-serif",
         textAlign: "center",
         background: getColor(numIssues),
         height:"100vh",
@@ -276,25 +275,78 @@ export default function App() {
           id="camera"
           ref={webcamRef}
           style={{
-            height:"300px"
+            height:"400px",
+            borderRadius:"40px",
+            width:"400px"
           }}
-        />
-        <canvas
-          ref={canvasRef}
-          // style={{
-          //   position: "relative",
-          //   marginLeft: "auto",
-          //   marginRight: "auto",
-          //   left: 0,
-          //   right: 0,
-          //   textAlign: "center",
-          //   zindex: 9,
-          //   width: 640,
-          //   height: 480
-          // }}
-        />
+        ><canvas
+        ref={canvasRef}
+        
+        
+      /></Webcam>
+        <h3 style={{ display: numIssues === -1 ? "none" : "inline-block" }}>
+          Posture&nbsp; {statuses.get(numIssues)}
+        </h3>
+        
+        
+        <p>Shoulder Tilt {shoulderSlopeOffset}</p>
+        <p>Head Tilt {headSlopeOffset}</p>
+        <p>Shoulder Alignment {shoulderYOffset}</p>
+        <Button variant={button1} onClick={changeSetPrefs}>
+          Set Your Preferred Posture
+        </Button>{" "}
         </div>
-        <div className="properties">2</div>
+        <div className="properties">
+
+        <h4 style={{ marginTop: "15px" }}>Sensitivity Adjustment</h4>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            padding: "10px",
+            marginTop: "10px"
+          }}
+        >
+          <div>
+            <p>Shoulder Tilt</p>
+            <p>{weights[0]}</p>
+            <ButtonGroup>
+              <Button onClick={() => changeWeight(0, false)} variant={button2}>
+                -
+              </Button>
+              <Button onClick={() => changeWeight(0, true)} variant={button2}>
+                +
+              </Button>
+            </ButtonGroup>
+          </div>
+
+          <div>
+            <p>Head Tilt</p>
+            <p>{weights[1]}</p>
+            <ButtonGroup>
+              <Button onClick={() => changeWeight(1, false)} variant={button2}>
+                -
+              </Button>
+              <Button onClick={() => changeWeight(1, true)} variant={button2}>
+                +
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div>
+            <p>Shoulder Alignment</p>
+            <p>{weights[2]}</p>
+            <ButtonGroup>
+              <Button onClick={() => changeWeight(2, false)} variant={button2}>
+                -
+              </Button>
+              <Button onClick={() => changeWeight(2, true)} variant={button2}>
+                +
+              </Button>
+            </ButtonGroup>
+          </div>
+        </div>
+
+        </div>
       </div>
 
         {/* {spinner}
