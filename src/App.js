@@ -126,7 +126,7 @@ export default function App() {
     Notifier.start(
       "Please check your posture",
       "You have been sitting poorly for the last minute. Consider repositioning yourself",
-      ""
+      "https://media.discordapp.net/attachments/767739252112359455/896333296160632883/unknown.png"
     );
   };
 
