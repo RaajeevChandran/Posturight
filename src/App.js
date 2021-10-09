@@ -30,18 +30,15 @@ export default function App() {
       var count = parseInt(localStorage.getItem("count")) || 0;
       var settings = (localStorage.getItem("settings") || ".15,.15,.15").split(
         ","
-      ); //shoulder tilt, head tilt, slouch
+      );
       var shoulderTiltSetting = settings[0];
       var headTiltSetting = settings[1];
       var slouchSetting = settings[2];
-      // Get Video Properties
       const video = webcamRef.current.video;
       const videoWidth = webcamRef.current.video.videoWidth;
       const videoHeight = webcamRef.current.video.videoHeight;
-      // Set video width
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
-      // Make Estimation
       const pose = await posenet_model.estimateSinglePose(video);
       var leftS = pose["keypoints"][5]["position"];
       var rightS = pose["keypoints"][6]["position"];
@@ -51,7 +48,6 @@ export default function App() {
       var shoY = Math.round((rightS["y"] + leftS["y"]) / 2);
       setShoulderY(shoY);
       setShoulderYOffset(calcShoulderYOffset(shoY, slouchSetting));
-      // setShoulderYOffset((shoY,slouchSetting))
       setShoulderSlope(Math.round(shoulderSlope * 100) / 100);
       setShoulderSlopeOffset(
         Math.round((shoulderTiltSetting - shoulderSlope) * 100) / 100
@@ -71,7 +67,7 @@ export default function App() {
 
       var weights = (localStorage.getItem("weights") || ".15,.15,.15").split(
         ","
-      ); //shoulder tilt, head tilt, slouch
+      );
       var shoulderTiltWeight = weights[0];
       var headTiltWeight = weights[1];
       var slouchWeight = weights[2];
@@ -106,7 +102,6 @@ export default function App() {
         localStorage.setItem("count", count);
       }
       if (count > 30) {
-        console.log("sending notification");
         localStorage.setItem("count", 0); //reset count
         sendNotification();
       }
@@ -115,9 +110,7 @@ export default function App() {
   };
 
   const changeSetPrefs = () => {
-    console.log("Saving settings");
     localStorage.setItem("count", 0); //reset count
-    //save settings
     var newSettings = [];
     newSettings.push(shoulderSlope);
     newSettings.push(headSlope);
@@ -132,7 +125,7 @@ export default function App() {
     Notification.requestPermission();
     Notifier.start(
       "Please check your posture",
-      "You have been sitting poorly for the last minute. Consider repositioning",
+      "You have been sitting poorly for the last minute. Consider repositioning yourself",
       ""
     );
   };
@@ -161,7 +154,6 @@ export default function App() {
     console.log(output);
     return output;
   }
-  //calculate shoulder slope
   const drawResult = (pose, video, videoWidth, videoHeight, canvas) => {
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
@@ -170,9 +162,8 @@ export default function App() {
   };
 
   function changeWeight(item, increment) {
-    //0 - shoulder tilt , 1 - head tilt, 2 - slouch, boolean
     console.log(item + " t " + increment);
-    var weights = (localStorage.getItem("weights") || ".15,.15,.15").split(","); //shoulder tilt, head tilt, slouch
+    var weights = (localStorage.getItem("weights") || ".15,.15,.15").split(",");
     console.log(weights[1]);
     console.log(weights);
     console.log(parseFloat(weights[1]));
@@ -180,7 +171,7 @@ export default function App() {
     var headTiltWeight = Math.round(parseFloat(weights[1]) * 100) / 100;
     var slouchWeight = Math.round(parseFloat(weights[2]) * 100) / 100;
     if (item === 0) {
-      //shoulder tilt
+      //Sets shoulder tilt
 
       if (increment && shoulderTiltWeight <= 0.9) {
         console.log("increasing");
@@ -189,7 +180,7 @@ export default function App() {
         shoulderTiltWeight -= 0.1;
       }
     } else if (item === 1) {
-      //head tilt
+      //Sets head tilt
       if (increment && headTiltWeight <= 0.9) {
         headTiltWeight += 0.1;
       } else if (!increment && headTiltWeight > 0.1) {
@@ -206,12 +197,7 @@ export default function App() {
     newWeights.push(Math.round(parseFloat(shoulderTiltWeight) * 100) / 100);
     newWeights.push(Math.round(parseFloat(headTiltWeight) * 100) / 100);
     newWeights.push(Math.round(parseFloat(slouchWeight) * 100) / 100);
-    console.log("new weights " + newWeights);
     setWeights(newWeights);
-    // localStorage.setItem(
-    //   "weights",
-    //   String(newWeights).replaceAll("[", "").replaceAll("]", "")
-    // );
   }
 
   var statuses = new Map([
@@ -276,15 +262,27 @@ export default function App() {
         padding: 0
       }}
     >
+      <img
+        style={{
+          height:80,
+          width:80,
+          borderRadius:25,
+          position:"absolute",
+          top:20,
+          left:20
+        }}
+        alt="logo"
+        src="https://cdn.discordapp.com/attachments/767739252112359455/896333296160632883/unknown.png"
+      />
       <div className="container">
         <div className="cam">
           <Webcam
             id="camera"
             ref={webcamRef}
             style={{
-              height: "400px",
-              borderRadius: "40px",
-              width: "400px"
+              height: 400,
+              borderRadius: 50,
+              width: 400
             }}
           >
             <canvas ref={canvasRef} />
